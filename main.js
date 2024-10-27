@@ -19,11 +19,18 @@ function divide(a, b) {
 }
 
 let buttons = document.querySelectorAll('button');
-let result = document.querySelector('.screen p');
+let screen = document.querySelector('.screen p');
 
 buttons.forEach(button => {
     button.addEventListener('click', (e) => {
-        if (result.textContent === '0') result.textContent = e.target.textContent;
-        else result.textContent += e.target.textContent;
+        let clickedButton = e.target.textContent.trim();
+
+        if (clickedButton === 'CLEAR') screen.textContent = '0';
+        else if (clickedButton === 'DELETE') { 
+            if (screen.textContent.length === 1) screen.textContent = 0;
+            else screen.textContent = screen.textContent.slice(0, -1);
+        }
+        else if (screen.textContent === '0') screen.textContent = e.target.textContent;
+        else screen.textContent += e.target.textContent;
     })
 })
