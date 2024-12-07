@@ -1,17 +1,17 @@
 function add(a, b) {
-    return a + b;
+    return Number(a) + Number(b);
 }
 
 function subtract(a, b) {
-    return a - b;
+    return Number(a) - Number(b);
 }
 
 function multiply(a, b) {
-    return a * b;
+    return Number(a) * Number(b);
 }
 
 function divide(a, b) {
-    return a / b;
+    return Number(a) / Number(b);
 }
 
 let buttons = document.querySelectorAll('button');
@@ -70,8 +70,23 @@ buttons.forEach(button => {
                 break;
             case '=':
                 operandB = screen.textContent.trim();
-                console.log(operandA);
-                console.log(operandB);
+
+                if (operator === '+') {
+                    let result = add(operandA, operandB);
+                    screen.textContent = result;
+                } 
+                else if (operator === '-') {
+                    let result = subtract(operandA, operandB);
+                    screen.textContent = result;
+                }
+                else if (operator === '/') {
+                    let result = divide(operandA, operandB);
+                    screen.textContent = result;
+                } else {
+                     let result = multiply(operandA, operandB);
+                     screen.textContent = result;
+                }
+                break;
             default:
                 if (screen.textContent === '0') {
                     screen.textContent = e.target.textContent;
