@@ -4,7 +4,6 @@ let screen = document.querySelector('.screen p');
 let operator;
 let operandA;
 let operandB;
-let dotIsPresent = false;
 
 buttons.forEach(button => {
   button.addEventListener('click', (e) => {
@@ -32,3 +31,6 @@ function multiply(a, b) {
 function divide(a, b) {
   return Number(a) / Number(b);
 }
+
+
+// test
