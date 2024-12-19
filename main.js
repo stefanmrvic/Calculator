@@ -4,7 +4,7 @@ let screen = document.querySelector('.screen p');
 let operator;
 let operandA;
 let operandB;
-let dotIsPresent = false;
+let operatorSum = false;
 
 buttons.forEach(button => {
   button.addEventListener('click', (e) => {
@@ -16,6 +16,7 @@ buttons.forEach(button => {
         operandB = '';
         operator = '';
         screen.textContent = '0';
+        operatorSum = false;
         break;
       case 'DELETE':
         if (screen.textContent.length === 1) screen.textContent = 0;
@@ -38,39 +39,40 @@ buttons.forEach(button => {
       case '×':
       case '÷':
         operator = clickedButton;
-        screen.textContent = '0';
-
+        
         if (operandA && operandB) {
           let result = calculateResult(operandA, operandB, operator);
-
+          screen.textContent = result;
           operandA = result;
           operandB = '';
-          screen.textContent = result;
+          operatorSum = true;
+
+        } else {
+          screen.textContent = '0';
         }
         break;
         
       case '=':
-        console.log(operandA);
-        console.log(operandB);
         if (operandA && operandB) {
           let result = calculateResult(operandA, operandB, operator);
-
-            operandA = result;
-            operandB = '';
-            screen.textContent = result;
+          screen.textContent = result;
+          operandA = result;
+          operandB = '';
         }
         break;
         
       default:
-        if (screen.textContent === '0') {
+        if (screen.textContent === '0' || operatorSum) {
           screen.textContent = e.target.textContent;
+          operatorSum = false;
         } else {
-            screen.textContent += e.target.textContent;
+          screen.textContent += e.target.textContent;
         }
+
         if (!operator) {
           operandA = screen.textContent;
         } else {
-            operandB = screen.textContent;
+          operandB = screen.textContent;
         }
         break;
     }
@@ -78,7 +80,6 @@ buttons.forEach(button => {
 })
 
 function calculateResult(operandA, operandB, operator) { 
-  
   let sum;
   
   if (operator === '+') {
