@@ -1,3 +1,4 @@
+let buttons = document.querySelectorAll('button');
 let screen = document.querySelector('.screen p');
 
 let operator;
