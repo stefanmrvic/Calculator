@@ -1,4 +1,3 @@
-let buttons = document.querySelectorAll('button');
 let screen = document.querySelector('.screen p');
 
 let operator;
@@ -19,8 +18,12 @@ buttons.forEach(button => {
         operatorSum = false;
         break;
       case 'DELETE':
-        if (screen.textContent.length === 1) screen.textContent = 0;
-        else screen.textContent = screen.textContent.slice(0, -1);
+        if (screen.textContent.length === 1) { 
+          screen.textContent = 0;
+        } else {
+          screen.textContent = screen.textContent.slice(0, -1);
+          operator ? operandB = screen.textContent : operandA = screen.textContent;
+        }
         break;
       case '0':
         if (screen.textContent === '0') {
@@ -31,36 +34,40 @@ buttons.forEach(button => {
         break;
       case '.':
         if (!screen.textContent.includes('.')) {
-             screen.textContent += e.target.textContent;
-         }
+          screen.textContent += e.target.textContent;
+        }
         break;
       case '+':
       case '-':
       case '×':
       case '÷':
-        operator = clickedButton;
-        
+        if (!operator) {
+          operator = clickedButton;
+        }
+
         if (operandA && operandB) {
           let result = calculateResult(operandA, operandB, operator);
           screen.textContent = result;
           operandA = result;
           operandB = '';
+          operator = '';
           operatorSum = true;
-
+          
         } else {
           screen.textContent = '0';
         }
         break;
-        
+
       case '=':
         if (operandA && operandB) {
           let result = calculateResult(operandA, operandB, operator);
           screen.textContent = result;
           operandA = result;
           operandB = '';
+          operator = '';
         }
         break;
-        
+
       default:
         if (screen.textContent === '0' || operatorSum) {
           screen.textContent = e.target.textContent;
@@ -73,15 +80,16 @@ buttons.forEach(button => {
           operandA = screen.textContent;
         } else {
           operandB = screen.textContent;
+          console.log(operandB);
         }
         break;
     }
   })
 })
 
-function calculateResult(operandA, operandB, operator) { 
+function calculateResult(operandA, operandB, operator) {
   let sum;
-  
+
   if (operator === '+') {
     sum = add(operandA, operandB);
   }
