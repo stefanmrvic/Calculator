@@ -21,16 +21,14 @@ buttons.forEach(button => {
       case 'DELETE':
         if (screen.textContent.length === 1) { 
           screen.textContent = 0;
-        } else {
+        } 
+        else if (operator) {
           screen.textContent = screen.textContent.slice(0, -1);
-          operator ? operandB = screen.textContent : operandA = screen.textContent;
+          operandB = screen.textContent;
         }
-        break;
-      case '0':
-        if (screen.textContent === '0') {
-          screen.textContent = e.target.textContent;
-        } else {
-          screen.textContent += e.target.textContent;
+        else {
+          screen.textContent = screen.textContent.slice(0, -1);
+          operandA = screen.textContent;
         }
         break;
       case '.':
@@ -76,12 +74,11 @@ buttons.forEach(button => {
         } else {
           screen.textContent += e.target.textContent;
         }
-
+        
         if (!operator) {
           operandA = screen.textContent;
         } else {
           operandB = screen.textContent;
-          console.log(operandB);
         }
         break;
     }
@@ -111,6 +108,8 @@ function add(a, b) {
 }
 
 function subtract(a, b) {
+  console.log(a);
+  console.log(b);
   return Number(a) - Number(b);
 }
 
