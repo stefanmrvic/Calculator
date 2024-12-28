@@ -18,6 +18,7 @@ buttons.forEach(button => {
         screen.textContent = '0';
         operatorSum = false;
         break;
+
       case 'DELETE':
         if (screen.textContent.length === 1) { 
           screen.textContent = 0;
@@ -31,26 +32,30 @@ buttons.forEach(button => {
           operandA = screen.textContent;
         }
         break;
+
       case '.':
         if (!screen.textContent.includes('.')) {
           screen.textContent += e.target.textContent;
         }
         break;
+
       case '+':
       case '-':
       case '×':
       case '÷':
-        if (!operator) {
+        if (!operandB) {
           operator = clickedButton;
         }
 
         if (operandA && operandB) {
           let result = calculateResult(operandA, operandB, operator);
-          screen.textContent = result;
-          operandA = result;
-          operandB = '';
-          operator = '';
-          operatorSum = true;
+          if (result !== '') {
+            screen.textContent = result;
+            operandA = result;
+            operandB = '';
+            operator = clickedButton;
+            operatorSum = true;
+          }
           
         } else {
           screen.textContent = '0';
@@ -60,10 +65,12 @@ buttons.forEach(button => {
       case '=':
         if (operandA && operandB) {
           let result = calculateResult(operandA, operandB, operator);
-          screen.textContent = result;
-          operandA = result;
-          operandB = '';
-          operator = '';
+          if (result !== '') {
+            screen.textContent = result;
+            operandA = result;
+            operandB = '';
+            operator = '';
+          }
         }
         break;
 
@@ -95,6 +102,10 @@ function calculateResult(operandA, operandB, operator) {
     sum = subtract(operandA, operandB);
   }
   else if (operator === '÷') {
+    if (operandB === '0') {
+      alert("You can't divide by 0!!");
+      return;
+    }
     sum = divide(operandA, operandB)
   }
   else if (operator === '×') {
@@ -108,8 +119,6 @@ function add(a, b) {
 }
 
 function subtract(a, b) {
-  console.log(a);
-  console.log(b);
   return Number(a) - Number(b);
 }
 
