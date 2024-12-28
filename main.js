@@ -10,12 +10,7 @@ buttons.forEach(button => button.addEventListener('click', operate));
 window.addEventListener("keydown", operate);
 
 function operate(e) {
-  //let pressedButton = e.key;
-  let button;
-  if (e.key) button = e.key;
-  else button = e.target.textContent.trim();
-
-  console.log(button);
+  const button = e.key || e.target.textContent.trim();
 
   switch (button) {
     case 'CLEAR':
