@@ -59,6 +59,10 @@ button:active {
     margin-bottom: 20px;
 }
 
+.screen p {
+    word-wrap: break-word;
+}
+
 .container .buttons {
     width: 100%;
     display: flex;

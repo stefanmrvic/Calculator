@@ -6,126 +6,139 @@ let operandA;
 let operandB;
 let operatorSum = false;
 
-buttons.forEach(button => {
-  button.addEventListener('click', (e) => {
-    let clickedButton = e.target.textContent.trim();
+buttons.forEach(button => button.addEventListener('click', operate));
+window.addEventListener("keydown", operate);
 
-    switch (clickedButton) {
-      case 'CLEAR':
-        operandA = '';
-        operandB = '';
-        operator = '';
+function operate(e) {
+  //let pressedButton = e.key;
+  let button;
+  if (e.key) button = e.key;
+  else button = e.target.textContent.trim();
+
+  console.log(button);
+
+  switch (button) {
+    case 'CLEAR':
+      operandA = '';
+      operandB = '';
+      operator = '';
+      screen.textContent = '0';
+      operatorSum = false;
+      break;
+
+    case 'DELETE':
+    case 'Backspace':
+      if (screen.textContent.length === 1) { 
+        screen.textContent = 0;
+      } else if (operator) {
+        screen.textContent = screen.textContent.slice(0, -1);
+        operandB = screen.textContent;
+      } else {
+        screen.textContent = screen.textContent.slice(0, -1);
+        operandA = screen.textContent;
+      }
+      break;
+
+    case '.':
+      if (!screen.textContent.includes('.')) {
+        screen.textContent += button;
+      }
+      break;
+
+    case '+':
+    case '-':
+    case '×':
+    case '*': 
+    case '÷':
+    case '/':
+      if (!operandB) {
+        operator = button;
+      }
+
+      if (operandA && operandB) {
+        let result = calculateResult(operandA, operandB, operator);
+        if (result !== '') {
+          screen.textContent = result;
+          operandA = result;
+          operandB = '';
+          operator = button;
+          operatorSum = true;
+        }
+      } else {
         screen.textContent = '0';
+      }
+      break;
+
+    case '=':
+    case 'Enter':
+      if (operandA && operandB) {
+        let result = calculateResult(operandA, operandB, operator);
+        if (result !== '') {
+          screen.textContent = result;
+          operandA = result;
+          operandB = '';
+          operator = '';
+        }
+      }
+      break;
+
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+      if (screen.textContent === '0' || operatorSum) {
+        screen.textContent = button;
         operatorSum = false;
-        break;
+      } else {
+        screen.textContent += button;
+      }
 
-      case 'DELETE':
-        if (screen.textContent.length === 1) { 
-          screen.textContent = 0;
-        } 
-        else if (operator) {
-          screen.textContent = screen.textContent.slice(0, -1);
-          operandB = screen.textContent;
-        }
-        else {
-          screen.textContent = screen.textContent.slice(0, -1);
-          operandA = screen.textContent;
-        }
-        break;
+      if (!operator) {
+        operandA = screen.textContent;
+      } else {
+        operandB = screen.textContent;
+      }
+      break;
+  }
 
-      case '.':
-        if (!screen.textContent.includes('.')) {
-          screen.textContent += e.target.textContent;
-        }
-        break;
-
-      case '+':
-      case '-':
-      case '×':
-      case '÷':
-        if (!operandB) {
-          operator = clickedButton;
-        }
-
-        if (operandA && operandB) {
-          let result = calculateResult(operandA, operandB, operator);
-          if (result !== '') {
-            screen.textContent = result;
-            operandA = result;
-            operandB = '';
-            operator = clickedButton;
-            operatorSum = true;
-          }
-          
-        } else {
-          screen.textContent = '0';
-        }
-        break;
-
-      case '=':
-        if (operandA && operandB) {
-          let result = calculateResult(operandA, operandB, operator);
-          if (result !== '') {
-            screen.textContent = result;
-            operandA = result;
-            operandB = '';
-            operator = '';
-          }
-        }
-        break;
-
-      default:
-        if (screen.textContent === '0' || operatorSum) {
-          screen.textContent = e.target.textContent;
-          operatorSum = false;
-        } else {
-          screen.textContent += e.target.textContent;
-        }
-        
-        if (!operator) {
-          operandA = screen.textContent;
-        } else {
-          operandB = screen.textContent;
-        }
-        break;
+  function calculateResult(operandA, operandB, operator) {
+    let sum;
+  
+    if (operator === '+') {
+      sum = add(operandA, operandB);
+    } else if (operator === '-') {
+      sum = subtract(operandA, operandB);
+    } else if (operator === '÷' || operator === '/') {
+      if (operandB === '0') {
+        alert("You can't divide by 0!!");
+        return;
+      }
+      sum = divide(operandA, operandB)
+    } else if (operator === '×' || operator === '*') {
+      sum = multiply(operandA, operandB);
     }
-  })
-})
-
-function calculateResult(operandA, operandB, operator) {
-  let sum;
-
-  if (operator === '+') {
-    sum = add(operandA, operandB);
+    return sum;
   }
-  else if (operator === '-') {
-    sum = subtract(operandA, operandB);
+  
+  function add(a, b) {
+    return Number(a) + Number(b);
   }
-  else if (operator === '÷') {
-    if (operandB === '0') {
-      alert("You can't divide by 0!!");
-      return;
-    }
-    sum = divide(operandA, operandB)
+  
+  function subtract(a, b) {
+    return Number(a) - Number(b);
   }
-  else if (operator === '×') {
-    sum = multiply(operandA, operandB);
+  
+  function multiply(a, b) {
+    return Number(a) * Number(b);
   }
-  return sum;
-}
-
-function add(a, b) {
-  return Number(a) + Number(b);
-}
-
-function subtract(a, b) {
-  return Number(a) - Number(b);
-}
-
-function multiply(a, b) {
-  return Number(a) * Number(b);
-}
-
-function divide(a, b) {
-  return Number(a) / Number(b);
+  
+  function divide(a, b) {
+    return Number(a) / Number(b);
+  }
 }
