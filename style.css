@@ -53,7 +53,7 @@ button:active {
     background-color: #eee;
     border: 2px solid black;
     border-radius: 5px;
-    padding: 50px 20px 20px 15px;
+    padding: 15px 20px 20px 15px;
     text-align: end;
     align-self: stretch;
     margin-bottom: 20px;
@@ -61,6 +61,11 @@ button:active {
 
 .screen p {
     word-wrap: break-word;
+}
+
+#operate-screen {
+    font-size: 20px;
+    margin-bottom: 12px;
 }
 
 .container .buttons {

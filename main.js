@@ -1,5 +1,11 @@
-let buttons = document.querySelectorAll('button');
-let screen = document.querySelector('.screen p');
+const buttons = document.querySelectorAll('button');
+const screen = document.getElementById('type-screen');
+const operateScreen = document.getElementById('operate-screen');
+const screenOperandA = document.getElementById('operandA');
+const screenOperandB = document.getElementById('operandB');
+const screenOperator = document.getElementById('operator');
+
+operateScreen.textContent = '0';
 
 let operator;
 let operandA;
@@ -61,6 +67,7 @@ function operate(e) {
         }
       } else {
         screen.textContent = '0';
+        operandA = screen.textContent;
       }
       break;
 
