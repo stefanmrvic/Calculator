@@ -68,6 +68,14 @@ button:active {
     margin-bottom: 12px;
 }
 
+/* #operandA {
+    visibility: hidden;
+} */
+
+.operandA-show {
+    visibility: visible;
+}
+
 .container .buttons {
     width: 100%;
     display: flex;

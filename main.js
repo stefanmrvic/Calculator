@@ -1,11 +1,9 @@
 const buttons = document.querySelectorAll('button');
 const screen = document.getElementById('type-screen');
 const operateScreen = document.getElementById('operate-screen');
-const screenOperandA = document.getElementById('operandA');
-const screenOperandB = document.getElementById('operandB');
-const screenOperator = document.getElementById('operator');
-
-operateScreen.textContent = '0';
+let screenOperandA = document.getElementById('operandA');
+let screenOperandB = document.getElementById('operandB');
+let screenOperator = document.getElementById('operator');
 
 let operator;
 let operandA;
@@ -23,6 +21,9 @@ function operate(e) {
       operandA = '';
       operandB = '';
       operator = '';
+      screenOperandA.textContent = '0';
+      screenOperandB.textContent = '';
+      screenOperator.textContent = '';
       screen.textContent = '0';
       operatorSum = false;
       break;
@@ -52,23 +53,32 @@ function operate(e) {
     case '*': 
     case '÷':
     case '/':
-      if (!operandB) {
-        operator = button;
-      }
-
-      if (operandA && operandB) {
-        let result = calculateResult(operandA, operandB, operator);
-        if (result !== '') {
-          screen.textContent = result;
-          operandA = result;
-          operandB = '';
-          operator = button;
-          operatorSum = true;
-        }
-      } else {
+      if (!operandA) {
         screen.textContent = '0';
         operandA = screen.textContent;
+        screenOperandA.textContent = operandA;
+
+      } else if (!operandB) {
+        operator = button;
+        screenOperator.textContent = button;
+
+      } else if (operandA && operandB) {
+        let result = calculateResult(operandA, operandB, operator);
+          if (result !== '') {
+            screenOperandA.textContent = operandA;
+            screenOperator.textContent = button;
+            screenOperandB.textContent = `${operandB} =`;
+
+            screen.textContent = result;
+            operandA = result;
+            operandB = '';
+            operator = button;
+            operatorSum = true;
+          }
+      } else {
+        screenOperandA.textContent = operandA;
       }
+      
       break;
 
     case '=':
