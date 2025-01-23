@@ -30,7 +30,7 @@ function operate(e) {
 
     case 'DELETE':
     case 'Backspace':
-      if (screen.textContent.length === 1) { 
+      if (screen.textContent.length === 1) {
         screen.textContent = 0;
       } else if (operator) {
         screen.textContent = screen.textContent.slice(0, -1);
@@ -50,9 +50,10 @@ function operate(e) {
     case '+':
     case '-':
     case '×':
-    case '*': 
+    case '*':
     case '÷':
     case '/':
+      
       if (!operandA) {
         screen.textContent = '0';
         operandA = screen.textContent;
@@ -61,24 +62,26 @@ function operate(e) {
       } else if (!operandB) {
         operator = button;
         screenOperator.textContent = button;
+        screenOperandA.textContent = screen.textContent;
+        screen.textContent = '0';
 
       } else if (operandA && operandB) {
         let result = calculateResult(operandA, operandB, operator);
-          if (result !== '') {
-            screenOperandA.textContent = operandA;
-            screenOperator.textContent = button;
-            screenOperandB.textContent = `${operandB} =`;
+        if (result !== '') {
+          screenOperandA.textContent = operandA;
+          screenOperator.textContent = button;
+          screenOperandB.textContent += ' =';
 
-            screen.textContent = result;
-            operandA = result;
-            operandB = '';
-            operator = button;
-            operatorSum = true;
-          }
+          screen.textContent = result;
+          operandA = result;
+          operandB = '';
+          operator = button;
+          operatorSum = true;
+        }
       } else {
         screenOperandA.textContent = operandA;
       }
-      
+
       break;
 
     case '=':
@@ -90,6 +93,7 @@ function operate(e) {
           operandA = result;
           operandB = '';
           operator = '';
+          screenOperandB.textContent += ' =';
         }
       }
       break;
@@ -113,15 +117,17 @@ function operate(e) {
 
       if (!operator) {
         operandA = screen.textContent;
+        screenOperandA.textContent = operandA;
       } else {
         operandB = screen.textContent;
+        screenOperandB.textContent = operandB;
       }
       break;
   }
 
   function calculateResult(operandA, operandB, operator) {
     let sum;
-  
+
     if (operator === '+') {
       sum = add(operandA, operandB);
     } else if (operator === '-') {
@@ -137,20 +143,20 @@ function operate(e) {
     }
     return sum;
   }
-  
+
   function add(a, b) {
     return Number(a) + Number(b);
   }
-  
+
   function subtract(a, b) {
     return Number(a) - Number(b);
   }
-  
+
   function multiply(a, b) {
     return Number(a) * Number(b);
   }
-  
+
   function divide(a, b) {
-    return Number(a) / Number(b);
-  }
+    return Number(a) / Number(b);
+  }
 }
