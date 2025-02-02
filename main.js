@@ -21,7 +21,7 @@ function operate(e) {
       operandA = '';
       operandB = '';
       operator = '';
-      screenOperandA.textContent = '0';
+      screenOperandA.textContent = '';
       screenOperandB.textContent = '';
       screenOperator.textContent = '';
       screen.textContent = '0';
@@ -53,35 +53,34 @@ function operate(e) {
     case '*':
     case '÷':
     case '/':
-      
+
       if (!operandA) {
         screen.textContent = '0';
         operandA = screen.textContent;
         screenOperandA.textContent = operandA;
+        screenOperator = button;
 
       } else if (!operandB) {
-        operator = button;
-        screenOperator.textContent = button;
-        screenOperandA.textContent = screen.textContent;
-        screen.textContent = '0';
+          operator = button;
+          screenOperator = button;
+          screenOperandB.textContent = screen.textContent;
 
       } else if (operandA && operandB) {
-        let result = calculateResult(operandA, operandB, operator);
-        if (result !== '') {
-          screenOperandA.textContent = operandA;
-          screenOperator.textContent = button;
-          screenOperandB.textContent += ' =';
+          let result = calculateResult(operandA, operandB, operator);
+          if (result !== '') {
+            screenOperandA.textContent = operandA;
+            screenOperator.textContent = button;
+            screenOperandB.textContent += ' =';
 
-          screen.textContent = result;
-          operandA = result;
-          operandB = '';
-          operator = button;
-          operatorSum = true;
-        }
+            screen.textContent = result;
+            operandA = result;
+            operandB = '';
+            operator = button;
+            operatorSum = true;
+          }
       } else {
-        screenOperandA.textContent = operandA;
+          screenOperandA.textContent = operandA;
       }
-
       break;
 
     case '=':
@@ -117,10 +116,8 @@ function operate(e) {
 
       if (!operator) {
         operandA = screen.textContent;
-        screenOperandA.textContent = operandA;
       } else {
         operandB = screen.textContent;
-        screenOperandB.textContent = operandB;
       }
       break;
   }

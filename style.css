@@ -57,6 +57,7 @@ button:active {
     text-align: end;
     align-self: stretch;
     margin-bottom: 20px;
+    min-height: 120px;
 }
 
 .screen p {
@@ -66,6 +67,7 @@ button:active {
 #operate-screen {
     font-size: 20px;
     margin-bottom: 12px;
+    min-height: 23px;
 }
 
 /* #operandA {
