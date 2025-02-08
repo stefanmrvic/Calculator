@@ -1,6 +1,8 @@
 const buttons = document.querySelectorAll('button');
 const screen = document.getElementById('type-screen');
 const operateScreen = document.getElementById('operate-screen');
+
+// Variables prefixed with "screen" refer to smaller sized operands and operator above the main screen.
 let screenOperandA = document.getElementById('operandA');
 let screenOperandB = document.getElementById('operandB');
 let screenOperator = document.getElementById('operator');
@@ -8,8 +10,11 @@ let screenOperator = document.getElementById('operator');
 let operator;
 let operandA;
 let operandB;
+
+// Tracks whether a new number was typed after pressing the operator button.
+// If false: it replaces the screen.textContent with the number pressed .
+// If true: it "concatenates" the new number to the existing one.
 let newNumberTyped = false;
-let resultCalculated = false;
 
 buttons.forEach(button => button.addEventListener('click', operate));
 window.addEventListener("keydown", operate);
@@ -41,6 +46,7 @@ function operate(e) {
     case '.':
       if (!screen.textContent.includes('.')) {
         screen.textContent += button;
+        // Sets newNumberTyped to "true" to avoid "." getting deleted due to not being detected as a part of a number.
         newNumberTyped = true;
       }
       break;
@@ -57,21 +63,21 @@ function operate(e) {
         screenOperandA.textContent = operandA;
         screenOperator.textContent = operator;
         screen.textContent = '0';
-
       } else if (!operandB && newNumberTyped) {
-          operandB = screen.textContent;
-          screenOperandB.textContent = operandB;
-          screenOperandA.textContent = '';
-
+        // Sets 
+        operandB = screen.textContent;
+        screenOperandB.textContent = operandB;
+        screenOperandA.textContent = '';
       } else if (!operandB) {
-          operator = button;
-          screenOperator.textContent = button;
-          screenOperandB.textContent = '';
-          screenOperandA.textContent = operandA;
+        operator = button;
+        screenOperator.textContent = button;
+        screenOperandB.textContent = '';
+        screenOperandA.textContent = operandA;
       } else {
-          screenOperandA.textContent = operandA;
+        screenOperandA.textContent = operandA;
       }
 
+      // If both operands are set when an operator is pressed, calculate the result.
       if (operandA && operandB) {
         let result = calculateResult(operandA, operandB, operator);
         if (result !== '') {
@@ -79,19 +85,23 @@ function operate(e) {
           operandA = result;
           operandB = '';
           operator = button;
-          resultCalculated = true;
 
           screenOperandA.textContent = operandA;
           screenOperator.textContent = button;
           screenOperandB.textContent = '';
         }
       }
+      // Sets newNumberTyped to "false", so that when new number is typed, 
+      // screen.textContent will be replaced by that number.
       newNumberTyped = false;
       break;
       
       case '=':
       case 'Enter':
+        // Checks if operandA is set and if any new number(s) was typed after user pressed 
+        // any of the operator buttons.
         if (operandA && newNumberTyped) {
+          // It sets operandB as the current screen.textContent, as both operandA and operator are known at that point.
           operandB = screen.textContent;
           screenOperandB.textContent = operandB; 
 
@@ -104,7 +114,6 @@ function operate(e) {
             operator = '';
             screenOperandB.textContent += ' =';
             newNumberTyped = false;
-            resultCalculated = true;
           }
       }
       break;
@@ -124,6 +133,7 @@ function operate(e) {
       } else {
         screen.textContent += button;
       }
+      // Sets newNumberTyped to "true" to avoid deleting any new numbers that are being typed.
       newNumberTyped = true;
       break;
   } 
@@ -145,7 +155,7 @@ function calculateResult(operandA, operandB, operator) {
   } else if (operator === '×' || operator === '*') {
     sum = multiply(operandA, operandB);
   }
-  //Rounding the number so it prevents 0.1 + 0.2 = 0.30000000000000004 issue
+  // Fixes floating-point precision issues (e.g., 0.1 + 0.2 = 0.30000000000000004).
   return Number(sum.toFixed(1));
 }
 
