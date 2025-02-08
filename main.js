@@ -79,7 +79,7 @@ function operate(e) {
           operandB = '';
           operator = button;
           resultCalculated = true;
-
+          
           screenOperandA.textContent = operandA;
           screenOperator.textContent = button;
           screenOperandB.textContent = '';
@@ -123,43 +123,42 @@ function operate(e) {
       } else {
         screen.textContent += button;
       }
-
       newNumberTyped = true;
       break;
-  }
+  } 
+}
 
-  function calculateResult(operandA, operandB, operator) {
-    let sum;
+function calculateResult(operandA, operandB, operator) {
+  let sum;
 
-    if (operator === '+') {
-      sum = add(operandA, operandB);
-    } else if (operator === '-') {
-      sum = subtract(operandA, operandB);
-    } else if (operator === '÷' || operator === '/') {
-      if (operandB === '0') {
-        alert("You can't divide by 0!!");
-        return;
-      }
-      sum = divide(operandA, operandB)
-    } else if (operator === '×' || operator === '*') {
-      sum = multiply(operandA, operandB);
+  if (operator === '+') {
+    sum = add(operandA, operandB);
+  } else if (operator === '-') {
+    sum = subtract(operandA, operandB);
+  } else if (operator === '÷' || operator === '/') {
+    if (operandB === '0') {
+      alert("You can't divide by 0!!");
+      return;
     }
-    return sum;
+    sum = divide(operandA, operandB)
+  } else if (operator === '×' || operator === '*') {
+    sum = multiply(operandA, operandB);
   }
+  return sum;
+}
 
-  function add(a, b) {
-    return Number(a) + Number(b);
-  }
+function add(a, b) {
+  return Number(a) + Number(b);
+}
 
-  function subtract(a, b) {
-    return Number(a) - Number(b);
-  }
+function subtract(a, b) {
+  return Number(a) - Number(b);
+}
 
-  function multiply(a, b) {
-    return Number(a) * Number(b);
-  }
+function multiply(a, b) {
+  return Number(a) * Number(b);
+}
 
-  function divide(a, b) {
-    return Number(a) / Number(b);
-  }
+function divide(a, b) {
+  return Number(a) / Number(b);
 }
