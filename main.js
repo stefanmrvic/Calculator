@@ -8,7 +8,8 @@ let screenOperator = document.getElementById('operator');
 let operator;
 let operandA;
 let operandB;
-let operatorSum = false;
+let newNumberTyped = false;
+let resultCalculated = false;
 
 buttons.forEach(button => button.addEventListener('click', operate));
 window.addEventListener("keydown", operate);
@@ -25,19 +26,15 @@ function operate(e) {
       screenOperandB.textContent = '';
       screenOperator.textContent = '';
       screen.textContent = '0';
-      operatorSum = false;
+      newNumberTyped = false;
       break;
 
     case 'DELETE':
     case 'Backspace':
       if (screen.textContent.length === 1) {
         screen.textContent = 0;
-      } else if (operator) {
-        screen.textContent = screen.textContent.slice(0, -1);
-        operandB = screen.textContent;
       } else {
         screen.textContent = screen.textContent.slice(0, -1);
-        operandA = screen.textContent;
       }
       break;
 
@@ -53,47 +50,61 @@ function operate(e) {
     case '*':
     case '÷':
     case '/':
-
       if (!operandA) {
-        screen.textContent = '0';
         operandA = screen.textContent;
+        operator = button;
         screenOperandA.textContent = operandA;
-        screenOperator = button;
+        screenOperator.textContent = operator;
+        screen.textContent = '0';
+
+      } else if (!operandB && newNumberTyped) {
+          operandB = screen.textContent;
+          screenOperandB.textContent = operandB;
+          screenOperandA.textContent = '';
 
       } else if (!operandB) {
           operator = button;
-          screenOperator = button;
-          screenOperandB.textContent = screen.textContent;
-
-      } else if (operandA && operandB) {
-          let result = calculateResult(operandA, operandB, operator);
-          if (result !== '') {
-            screenOperandA.textContent = operandA;
-            screenOperator.textContent = button;
-            screenOperandB.textContent += ' =';
-
-            screen.textContent = result;
-            operandA = result;
-            operandB = '';
-            operator = button;
-            operatorSum = true;
-          }
+          screenOperator.textContent = button;
+          screenOperandB.textContent = '';
+          screenOperandA.textContent = operandA;
       } else {
           screenOperandA.textContent = operandA;
       }
-      break;
 
-    case '=':
-    case 'Enter':
       if (operandA && operandB) {
         let result = calculateResult(operandA, operandB, operator);
         if (result !== '') {
           screen.textContent = result;
           operandA = result;
           operandB = '';
-          operator = '';
-          screenOperandB.textContent += ' =';
+          operator = button;
+          resultCalculated = true;
+
+          screenOperandA.textContent = operandA;
+          screenOperator.textContent = button;
+          screenOperandB.textContent = '';
         }
+      }
+      newNumberTyped = false;
+      break;
+      
+      case '=':
+      case 'Enter':
+        if (operandA && newNumberTyped) {
+          operandB = screen.textContent;
+          screenOperandB.textContent = operandB; 
+
+          let result = calculateResult(operandA, operandB, operator);
+
+          if (result !== '') {
+            screen.textContent = result;
+            operandA = result;
+            operandB = '';
+            operator = '';
+            screenOperandB.textContent += ' =';
+            newNumberTyped = false;
+            resultCalculated = true;
+          }
       }
       break;
 
@@ -107,18 +118,13 @@ function operate(e) {
     case '7':
     case '8':
     case '9':
-      if (screen.textContent === '0' || operatorSum) {
+      if (screen.textContent === '0' || !newNumberTyped) {
         screen.textContent = button;
-        operatorSum = false;
       } else {
         screen.textContent += button;
       }
 
-      if (!operator) {
-        operandA = screen.textContent;
-      } else {
-        operandB = screen.textContent;
-      }
+      newNumberTyped = true;
       break;
   }
 
