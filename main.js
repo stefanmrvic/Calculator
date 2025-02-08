@@ -41,6 +41,7 @@ function operate(e) {
     case '.':
       if (!screen.textContent.includes('.')) {
         screen.textContent += button;
+        newNumberTyped = true;
       }
       break;
 
@@ -79,7 +80,7 @@ function operate(e) {
           operandB = '';
           operator = button;
           resultCalculated = true;
-          
+
           screenOperandA.textContent = operandA;
           screenOperator.textContent = button;
           screenOperandB.textContent = '';
@@ -144,7 +145,8 @@ function calculateResult(operandA, operandB, operator) {
   } else if (operator === '×' || operator === '*') {
     sum = multiply(operandA, operandB);
   }
-  return sum;
+  //Rounding the number so it prevents 0.1 + 0.2 = 0.30000000000000004 issue
+  return Number(sum.toFixed(1));
 }
 
 function add(a, b) {
